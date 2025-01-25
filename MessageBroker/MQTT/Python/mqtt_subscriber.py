@@ -7,9 +7,10 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(f"Modtaget besked på {msg.topic}: {msg.payload.decode()}")
+    print("Besked modtaget!")  
 
 # Opret en MQTT-klient
-client = mqtt.Client()
+client = mqtt.Client()  
 
 # Tilmeld callback-funktioner
 client.on_connect = on_connect

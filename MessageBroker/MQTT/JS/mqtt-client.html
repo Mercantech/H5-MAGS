@@ -8,7 +8,6 @@
 </head>
 <body>
     <h1>MQTT Client</h1>
-    <input type="text" id="topic" placeholder="Emne" />
     <input type="text" id="message" placeholder="Besked" />
     <button id="publish">Send Besked</button>
     <h2>Modtagne Beskeder:</h2>
@@ -35,7 +34,7 @@
         });
 
         document.getElementById('publish').addEventListener('click', () => {
-            const topic = document.getElementById('topic').value;
+            const topic = "embedded"
             const message = document.getElementById('message').value;
             client.publish(topic, message, (err) => {
                 if (err) {

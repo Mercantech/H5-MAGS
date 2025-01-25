@@ -6,13 +6,12 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("embedded")  # Abonner på emnet
 
 # Opret en MQTT-klient
-client = mqtt.Client()
-
+client = mqtt.Client(protocol=mqtt.MQTTv311)  
 # Tilmeld callback-funktioner
 client.on_connect = on_connect
 
 # Forbind til MQTT-broker
-client.connect("localhost", 1883, 60)  # Brug MQTT-porten
+client.connect("192.168.1.234", 1883, 60)  # Brug MQTT-porten
 
 # Start loopet
 client.loop_start()
