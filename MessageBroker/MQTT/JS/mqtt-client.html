@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Client</title>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+    <h1>MQTT Client</h1>
+    <input type="text" id="topic" placeholder="Emne" />
+    <input type="text" id="message" placeholder="Besked" />
+    <button id="publish">Send Besked</button>
+    <h2>Modtagne Beskeder:</h2>
+    <ul id="messages"></ul>
+
+    <script>
+        // Opret forbindelse til MQTT-broker
+        const client = mqtt.connect('mqtt://localhost:1883'); // MQTT port
+
+        client.on('connect', () => {
+            console.log('Forbundet til MQTT-broker');
+            client.subscribe('test/topic', (err) => {
+                if (!err) {
+                    console.log('Abonneret på test/topic');
+                }
+            });
+        });
+
+        client.on('message', (topic, message) => {
+            // Når en besked modtages
+            const msg = document.createElement('li');
+            msg.textContent = `Emne: ${topic}, Besked: ${message.toString()}`;
+            document.getElementById('messages').appendChild(msg);
+        });
+
+        document.getElementById('publish').addEventListener('click', () => {
+            const topic = document.getElementById('topic').value;
+            const message = document.getElementById('message').value;
+            client.publish(topic, message, (err) => {
+                if (err) {
+                    console.error('Fejl ved afsendelse:', err);
+                } else {
+                    console.log('Besked sendt:', message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
