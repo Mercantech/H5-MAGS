@@ -1,0 +1,15 @@
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg12
+    container_name: timescaledb
+    environment:
+      - POSTGRES_DB=CSharpDatabase  # Navnet på din database
+      - POSTGRES_USER=CSharpAdmin     # Brugernavn
+      - POSTGRES_PASSWORD=CSharpAdmin # Adgangskode
+    ports:
+      - "5432:5432"               # Eksponerer porten på ip # 192.168.1.234
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data # Vedholdende data
+
+volumes:
+  timescaledb_data:

@@ -1,0 +1,14 @@
+.venv
+*.pyc
+*.pyo
+*.pyd
+*.pyz
+*.pyw
+*.pywz
+*venv
+*/.venv
+*.env
+*bin/
+*obj/
+appsettings.json
+appsettings.Development.json
