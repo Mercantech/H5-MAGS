@@ -1,5 +1,5 @@
 services:
-  timescaledb-csharp:
+  timescaledb:
     image: timescale/timescaledb:latest-pg12
     container_name: timescaledb
     environment:
@@ -7,19 +7,7 @@ services:
       - POSTGRES_USER=CSharpAdmin     # Brugernavn
       - POSTGRES_PASSWORD=CSharpAdmin # Adgangskode
     ports:
-      - "5432:5432"               # Eksponerer porten
-    volumes:
-      - timescaledb_data:/var/lib/postgresql/data # Vedholdende data
-
-  timescaledb-golang:
-    image: timescale/timescaledb:latest-pg12
-    container_name: timescaledb-golang
-    environment:
-      - POSTGRES_DB=GolangDatabase  # Navnet på din database
-      - POSTGRES_USER=GolangAdmin     # Brugernavn
-      - POSTGRES_PASSWORD=GolangAdmin # Adgangskode
-    ports:
-      - "5433:5432"               # Eksponerer porten
+      - "5432:5432"               # Eksponerer porten på ip # 192.168.1.234
     volumes:
       - timescaledb_data:/var/lib/postgresql/data # Vedholdende data
 
