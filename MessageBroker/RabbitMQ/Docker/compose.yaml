@@ -4,6 +4,8 @@ services:
     ports:
       - "5672:5672"  # RabbitMQ port
       - "15672:15672"  # RabbitMQ management UI
+      - "1884:1883"    # MQTT port
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_MANAGEMENT_PORT: 15672  # Tilføjet for at specificere management port
