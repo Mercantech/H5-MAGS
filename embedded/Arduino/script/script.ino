@@ -2,8 +2,8 @@
 #include <PubSubClient.h> // Inkluderer PubSubClient-biblioteket
 #include "config.h" // Inkluderer konfigurationsfilen
 
-const char* mqtt_server = "192.168.1.234"; 
-const char* topic = "embedded"; 
+const char* mqtt_server = "10.135.61.102"; 
+const char* topic = "test"; 
 
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
