@@ -2,6 +2,8 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -23,6 +25,8 @@ catch (Exception ex)
 }
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 
 app.MapOpenApi();

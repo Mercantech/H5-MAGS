@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../Models/Models.csproj" />
+    <ProjectReference Include="..\..\..\Aspire\H5-MAGS.ServiceDefaults\H5-MAGS.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
