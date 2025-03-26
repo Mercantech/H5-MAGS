@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Sensor Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-container {
+            padding: 20px;
+        }
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .metric-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .metric-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .status-indicator {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .status-indicator.connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-indicator.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .log-container {
+            height: 200px;
+            overflow-y: auto;
+            background: #2b2b2b;
+            color: #fff;
+            font-family: 'Consolas', monospace;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        .timestamp {
+            color: #888;
+        }
+        #gaugeCharts {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .gauge-container {
+            position: relative;
+            width: 200px;
+            text-align: center;
+        }
+        .gauge-value {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="row mb-4">
+            <div class="col">
+                <h1>IoT Sensor Dashboard</h1>
+                <div id="connectionStatus" class="status-indicator disconnected">
+                    <i class="fas fa-circle"></i>
+                    <span>Forbinder...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col">
+                <div class="metric-card">
+                    <div id="lastUpdated" class="text-muted">Sidst opdateret: --</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <i class="fas fa-thermometer-half metric-icon text-danger"></i>
+                    <div class="metric-value" id="temperature">--</div>
+                    <div class="metric-label">Temperatur (°C)</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <i class="fas fa-tint metric-icon text-primary"></i>
+                    <div class="metric-value" id="humidity">--</div>
+                    <div class="metric-label">Luftfugtighed (%)</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <i class="fas fa-compress-alt metric-icon text-success"></i>
+                    <div class="metric-value" id="pressure">--</div>
+                    <div class="metric-label">Lufttryk (hPa)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="chart-container">
+                    <h4>Historisk Data</h4>
+                    <canvas id="sensorChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="chart-container">
+                    <h4>Realtids Målere</h4>
+                    <div id="gaugeCharts">
+                        <div class="gauge-container">
+                            <canvas id="tempGauge"></canvas>
+                            <div class="gauge-value" id="tempGaugeValue">--°C</div>
+                        </div>
+                        <div class="gauge-container">
+                            <canvas id="humidityGauge"></canvas>
+                            <div class="gauge-value" id="humidityGaugeValue">--%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h4>Statistik</h4>
+                    <div id="stats">
+                        <div class="mb-2">
+                            <small>Gennemsnit Temp:</small>
+                            <span id="avgTemp">--</span>
+                        </div>
+                        <div class="mb-2">
+                            <small>Min/Max Temp:</small>
+                            <span id="minMaxTemp">--/--</span>
+                        </div>
+                        <div class="mb-2">
+                            <small>Målinger i dag:</small>
+                            <span id="measurementCount">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <div class="chart-container">
+                    <h4>System Log</h4>
+                    <div id="messageLog" class="log-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
