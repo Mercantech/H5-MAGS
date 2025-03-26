@@ -1,5 +1,6 @@
 using API.Data;
 using Microsoft.EntityFrameworkCore;
+using API.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHostedService<RabbitMQService>();
 IConfiguration Configuration = builder.Configuration;
 try
 {

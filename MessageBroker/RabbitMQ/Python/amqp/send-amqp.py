@@ -4,7 +4,7 @@ import sys
 # Forbindelsesindstillinger
 credentials = pika.PlainCredentials('admin', 'admin')  
 parameters = pika.ConnectionParameters(
-    host='10.135.61.102',
+    host='localhost',
     port=5672,
     credentials=credentials,
     heartbeat=600

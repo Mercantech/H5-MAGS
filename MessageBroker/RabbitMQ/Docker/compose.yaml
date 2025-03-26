@@ -5,8 +5,7 @@ services:
       - "5672:5672"  # RabbitMQ port med amqp-protokol
       - "15672:15672"  # RabbitMQ management UI
       - "1883:1883"    # MQTT port
+      - "15674:15674"  # WebSTOMP port
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
-      RABBITMQ_MANAGEMENT_PORT: 15672
-    command: rabbitmq-server -rabbitmq-plugins enable rabbitmq_mqtt  
