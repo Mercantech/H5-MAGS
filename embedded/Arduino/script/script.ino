@@ -8,7 +8,7 @@
 
 MKRIoTCarrier carrier;
 const char* mqtt_server = MQTT_SERVER; 
-const char* topic = "OLC-Data"; 
+const char* topic = "ArduinoData"; 
 const char* mqtt_username = MQTT_USERNAME;
 const char* mqtt_password = MQTT_PASSWORD;
 
